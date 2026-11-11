@@ -317,7 +317,7 @@
     <div class="player-top">
       <div class="player-info">
         <div class="player-title" id="playerTitle">Tap play to start</div>
-        <div class="player-artist" id="playerArtist">Track 1 of 3</div>
+        <div class="player-artist" id="playerArtist">Track 1 of 4</div>
       </div>
       <div class="player-controls">
         <button class="player-btn" id="prevBtn" aria-label="Previous track">⏮</button>
@@ -404,14 +404,47 @@
       "Drinking water before a workout can improve performance by up to 10%."
     ];
 
-    // Music Playlist - paths are now at the root level
+    // Music Playlist - 4 tracks
     const TRACKS = [
       { title: 'Workout Mix 1', artist: 'Hang Bar Mix', src: 'track1.mp3' },
       { title: 'Workout Mix 2', artist: 'Hang Bar Mix', src: 'track2.mp3' },
-      { title: 'Workout Mix 3', artist: 'Hang Bar Mix', src: 'track3.mp3' }
+      { title: 'Workout Mix 3', artist: 'Hang Bar Mix', src: 'track3.mp3' },
+      { title: 'Workout Mix 4', artist: 'Hang Bar Mix', src: 'track4.mp3' }
     ];
 
     const DAYS = ['A', 'B', 'C'];
     const STORAGE_KEY = 'hangbar_tracker_v15';
     const HISTORY_KEY = 'hangbar_history_v15';
-   
+    const REST_SECONDS = 60;
+    const CIRCUMFERENCE = 2 * Math.PI * 50;
+
+    let currentDay = 'A';
+    let state = {};
+    let history = {};
+    let timerInterval = null;
+    let timerRemaining = REST_SECONDS;
+    let audioCtx = null;
+    let wakeLock = null;
+    let repTarget = null;
+    let toastTimeout = null;
+    let currentFactIndex = 0;
+
+    // Player State
+    let currentTrackIndex = 0;
+    let isPlaying = false;
+
+    const els = {
+      clock: document.getElementById('headerClock'),
+      ringFill: document.getElementById('ringFill'),
+      ringPct: document.getElementById('ringPct'),
+      ringSub: document.getElementById('ringSub'),
+      resetAll: document.getElementById('resetAll'),
+      resetSession: document.getElementById('resetSession'),
+      dayTabs: document.getElementById('dayTabs'),
+      dayTitle: document.getElementById('dayTitle'),
+      exerciseList: document.getElementById('exerciseList'),
+      timerCard: document.getElementById('timerCard'),
+      timerDisplay: document.getElementById('timerDisplay'),
+      startTimer: document.getElementById('startTimer'),
+      resetTimer: document.getElementById('resetTimer'),
+      repCard: document.getElementById('rep

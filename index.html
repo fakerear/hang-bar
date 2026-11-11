@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#4d6bfe" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Hang Bar" />
+  <meta name="description" content="Beginner full-body workout tracker for a fixed high pull-up bar." />
+  <title>Hang Bar — Beginner Tracker</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <!-- Header / overall progress -->
+    <section class="v-card header-card">
+      <div class="header-row">
+        <div>
+          <h1 class="app-title">Hang Bar Beginner Plan</h1>
+          <p class="app-subtitle">3 days/week · full body · fixed high bar</p>
+        </div>
+        <div class="header-actions">
+          <span class="v-stat" id="overallStat">0 / 0 sets</span>
+          <button class="reset-link" id="resetAll" type="button">reset all</button>
+        </div>
+      </div>
+      <div class="progress-bar" aria-hidden="true">
+        <div class="progress-fill" id="overallFill"></div>
+      </div>
+    </section>
+
+    <!-- Day tabs -->
+    <nav class="day-tabs" id="dayTabs" aria-label="Workout day"></nav>
+
+    <!-- Exercise list -->
+    <section class="v-card">
+      <div class="list-head">
+        <h2 class="v-title list-title" id="dayTitle">Day A — Pull Focus</h2>
+        <button class="reset-link" id="resetSession" type="button">reset today</button>
+      </div>
+      <div id="exerciseList"></div>
+    </section>
+
+    <!-- Inline rep stepper (hidden until a set is tapped) -->
+    <section class="v-card rep-card" id="repCard" hidden>
+      <div class="rep-head">
+        <div>
+          <div class="v-label" style="margin-bottom:2px;" id="repExercise">Pull-ups</div>
+          <div class="rep-sub" id="repSetLabel">Set 1</div>
+        </div>
+        <button class="rep-cancel" id="repCancel" type="button" aria-label="Cancel">✕</button>
+      </div>
+      <div class="rep-stepper">
+        <button class="rep-step-btn" id="repMinus" type="button" aria-label="Decrease reps">−</button>
+        <input class="rep-value" id="repValue" type="number" min="0" max="99" inputmode="numeric" aria-label="Reps" />
+        <button class="rep-step-btn" id="repPlus" type="button" aria-label="Increase reps">+</button>
+      </div>
+      <div class="rep-actions">
+        <button class="v-btn" id="repSave" type="button">Save set</button>
+        <button class="v-btn-outline" id="repSkip" type="button">Mark done, no reps</button>
+      </div>
+    </section>
+
+    <!-- Rest timer -->
+    <section class="v-card timer-card">
+      <div class="v-label timer-label">Rest Timer</div>
+      <div class="timer-display idle" id="timerDisplay" role="timer" aria-live="off">0:60</div>
+      <div class="v-row timer-buttons">
+        <button class="v-btn" id="startTimer" type="button">Start 60s</button>
+        <button class="v-btn-outline" id="resetTimer" type="button">Reset</button>
+      </div>
+      <p class="hint" id="timerHint">Tap a set square when you finish it — the timer starts automatically. A beep and vibration signal the end of rest.</p>
+    </section>
+
+    <!-- Instructions -->
+    <section class="v-card">
+      <h2 class="v-title">How to run this</h2>
+      <div class="hint hint-block">
+        <p><strong>Warm-up (5 min):</strong> arm circles, shoulder rolls, 10 slow bodyweight squats, 20s easy dead hang.</p>
+        <p><strong>Progression:</strong> if you can't do a full pull-up, do <em>negatives</em> — jump to the top, lower yourself for 3–5 slow seconds. Once you hit the top of the rep range on every set, add one rep or one set.</p>
+        <p><strong>Screen stays awake</strong> while the rest timer is running, so your phone won't lock mid-set.</p>
+      </div>
+    </section>
+
+    <!-- Install prompt -->
+    <section class="v-card install-card" id="installCard" hidden>
+      <h2 class="v-title">Install as app</h2>
+      <p class="hint hint-block">Add this tracker to your home screen so it opens full-screen and works offline.</p>
+      <button class="v-btn" id="installBtn" type="button">Install</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

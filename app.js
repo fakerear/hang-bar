@@ -4,28 +4,28 @@ const PLAN = {
   A: {
     name: 'Day A — Pull Focus',
     exercises: [
-      { id: 'a1', name: 'Pull-ups (or negatives)', target: '3 sets × 3–6 reps', sets: 3, repRange: [3, 6] },
-      { id: 'a3', name: 'Hanging Leg Raises', target: '3 sets × 6–10 reps', sets: 3, repRange: [6, 10] },
-      { id: 'a4', name: 'Dead Hang', target: '3 sets × 20–30 sec', sets: 3, repRange: [20, 30], unit: 'sec' },
-      { id: 'a5', name: 'Bodyweight Squats', target: '3 sets × 12–15 reps', sets: 3, repRange: [12, 15] }
+      { id: 'a1', name: 'Pull-ups (or negatives)', target: '3 sets × 3–6 reps', sets: 3, repRange: [3, 6], tip: 'Jump to the top, then lower yourself as slowly as possible (3-5 seconds). Squeeze your shoulder blades together.' },
+      { id: 'a3', name: 'Hanging Leg Raises', target: '3 sets × 6–10 reps', sets: 3, repRange: [6, 10], tip: 'Keep your legs straight if possible. Exhale as you bring your toes up to the bar.' },
+      { id: 'a4', name: 'Dead Hang', target: '3 sets × 20–30 sec', sets: 3, repRange: [20, 30], unit: 'sec', tip: 'Just hang. Relax your shoulders slightly and breathe deeply. Great for grip and spine decompression.' },
+      { id: 'a5', name: 'Bodyweight Squats', target: '3 sets × 12–15 reps', sets: 3, repRange: [12, 15], tip: 'Keep your heels flat on the floor. Push your hips back as if sitting in a chair.' }
     ]
   },
   B: {
     name: 'Day B — Push & Core',
     exercises: [
-      { id: 'b1', name: 'Chin-ups (or negatives)', target: '3 sets × 3–6 reps', sets: 3, repRange: [3, 6] },
-      { id: 'b2', name: 'Push-ups', target: '3 sets × 8–15 reps', sets: 3, repRange: [8, 15] },
-      { id: 'b4', name: 'Split Squats', target: '3 sets × 8 each leg', sets: 3, repRange: [8, 8] },
-      { id: 'b5', name: 'Plank', target: '3 sets × 30–45 sec', sets: 3, repRange: [30, 45], unit: 'sec' }
+      { id: 'b1', name: 'Chin-ups (or negatives)', target: '3 sets × 3–6 reps', sets: 3, repRange: [3, 6], tip: 'Underhand grip. Pull your chest to the bar and focus on squeezing your biceps.' },
+      { id: 'b2', name: 'Push-ups', target: '3 sets × 8–15 reps', sets: 3, repRange: [8, 15], tip: 'Keep your body in a straight line. Don\'t let your hips sag.' },
+      { id: 'b4', name: 'Split Squats', target: '3 sets × 8 each leg', sets: 3, repRange: [8, 8], tip: 'Step one foot forward. Lower your back knee towards the floor, then push back up.' },
+      { id: 'b5', name: 'Plank', target: '3 sets × 30–45 sec', sets: 3, repRange: [30, 45], unit: 'sec', tip: 'Squeeze your glutes and abs. Don\'t let your lower back arch.' }
     ]
   },
   C: {
     name: 'Day C — Full Body',
     exercises: [
-      { id: 'c1', name: 'Pull-ups (or negatives)', target: '3 sets × 3–6 reps', sets: 3, repRange: [3, 6] },
-      { id: 'c2', name: 'Push-ups', target: '3 sets × 8–15 reps', sets: 3, repRange: [8, 15] },
-      { id: 'c4', name: 'Hanging Leg Raises', target: '3 sets × 6–10 reps', sets: 3, repRange: [6, 10] },
-      { id: 'c5', name: 'Dead Hang', target: '3 sets × 20–30 sec', sets: 3, repRange: [20, 30], unit: 'sec' }
+      { id: 'c1', name: 'Pull-ups (or negatives)', target: '3 sets × 3–6 reps', sets: 3, repRange: [3, 6], tip: 'Focus on pulling your elbows down to your ribs, not just pulling with your hands.' },
+      { id: 'c2', name: 'Push-ups', target: '3 sets × 8–15 reps', sets: 3, repRange: [8, 15], tip: 'Keep your elbows tucked at a 45-degree angle to protect your shoulders.' },
+      { id: 'c4', name: 'Hanging Leg Raises', target: '3 sets × 6–10 reps', sets: 3, repRange: [6, 10], tip: 'Control the swing. Lower your legs slowly to avoid swinging back and forth.' },
+      { id: 'c5', name: 'Dead Hang', target: '3 sets × 20–30 sec', sets: 3, repRange: [20, 30], unit: 'sec', tip: 'Try to hold on for 5 seconds longer than last time.' }
     ]
   }
 };
@@ -72,8 +72,8 @@ const TRACKS = [
 ];
 
 const DAYS = ['A', 'B', 'C'];
-const STORAGE_KEY = 'hangbar_tracker_v15';
-const HISTORY_KEY = 'hangbar_history_v15';
+const STORAGE_KEY = 'hangbar_tracker_v16';
+const HISTORY_KEY = 'hangbar_history_v16';
 const REST_SECONDS = 60;
 const CIRCUMFERENCE = 2 * Math.PI * 50;
 
@@ -152,54 +152,35 @@ loadFact();
 function loadTrack(index) {
   if (index >= TRACKS.length) index = 0;
   if (index < 0) index = TRACKS.length - 1;
-  
   currentTrackIndex = index;
   const track = TRACKS[currentTrackIndex];
-  
   els.audio.src = track.src;
   els.playerTitle.textContent = track.title;
   els.playerArtist.textContent = `${track.artist} · Track ${index + 1} of ${TRACKS.length}`;
-  
   if ('mediaSession' in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: track.title,
-      artist: track.artist,
-      album: 'Hang Bar Tracker'
-    });
+    navigator.mediaSession.metadata = new MediaMetadata({ title: track.title, artist: track.artist, album: 'Hang Bar Tracker' });
   }
 }
 
 function togglePlay() {
-  if (isPlaying) {
-    els.audio.pause();
-  } else {
-    els.audio.play().catch(e => console.log('Playback prevented:', e));
-  }
+  if (isPlaying) els.audio.pause();
+  else els.audio.play().catch(e => console.log('Playback prevented:', e));
 }
 
 els.playBtn.onclick = () => { haptic(); togglePlay(); };
 els.prevBtn.onclick = () => { haptic(); loadTrack(currentTrackIndex - 1); if (isPlaying) els.audio.play(); };
 els.nextBtn.onclick = () => { haptic(); loadTrack(currentTrackIndex + 1); if (isPlaying) els.audio.play(); };
-
 els.audio.onplay = () => { isPlaying = true; els.playBtn.innerHTML = '⏸'; };
 els.audio.onpause = () => { isPlaying = false; els.playBtn.innerHTML = '▶'; };
 els.audio.onended = () => { loadTrack(currentTrackIndex + 1); els.audio.play(); };
-
 els.audio.ontimeupdate = () => {
-  if (els.audio.duration) {
-    const pct = (els.audio.currentTime / els.audio.duration) * 100;
-    els.progressBar.style.width = pct + '%';
-  }
+  if (els.audio.duration) els.progressBar.style.width = (els.audio.currentTime / els.audio.duration) * 100 + '%';
 };
-
 els.progressContainer.onclick = (e) => {
   const rect = els.progressContainer.getBoundingClientRect();
   const pos = (e.clientX - rect.left) / rect.width;
-  if (els.audio.duration) {
-    els.audio.currentTime = pos * els.audio.duration;
-  }
+  if (els.audio.duration) els.audio.currentTime = pos * els.audio.duration;
 };
-
 if ('mediaSession' in navigator) {
   navigator.mediaSession.setActionHandler('play', () => { els.audio.play(); });
   navigator.mediaSession.setActionHandler('pause', () => { els.audio.pause(); });
@@ -234,6 +215,12 @@ function dayIsComplete(day) {
     for (let i = 0; i < ex.sets; i++) if (!getSet(day, ex.id, i).done) return false;
     return true;
   });
+}
+function exerciseIsComplete(day, exId) {
+  const ex = PLAN[day].exercises.find(e => e.id === exId);
+  if (!ex) return false;
+  for (let i = 0; i < ex.sets; i++) if (!getSet(day, ex.id, i).done) return false;
+  return true;
 }
 
 function renderWeeklyStats() {
@@ -319,32 +306,20 @@ function renderExercises() {
     const row = document.createElement('div');
     row.className = 'ex-row';
 
+    const header = document.createElement('div');
+    header.className = 'ex-header';
+    
+    const isDone = exerciseIsComplete(currentDay, ex.id);
+    
     const info = document.createElement('div');
     info.className = 'ex-info';
-    
-    let lastHtml = '';
-    const lastReps = history[currentDay + ':' + ex.id];
-    if (lastReps && lastReps.length) {
-      let deltaHtml = '';
-      const currentEntry = getSet(currentDay, ex.id, 0);
-      if (currentEntry.done && currentEntry.reps !== null) {
-         const diff = currentEntry.reps - lastReps[0];
-         if (diff > 0) deltaHtml = `<span class="delta-up">↑${diff}</span>`;
-         else if (diff < 0) deltaHtml = `<span class="delta-down">↓${Math.abs(diff)}</span>`;
-      }
-      lastHtml = `
-        <div class="ex-last-wrapper">
-          <div class="ex-last">Last: ${lastReps.join(' · ')} ${ex.unit || ''}</div>
-          ${deltaHtml}
-        </div>`;
-    }
-
     info.innerHTML = `
-      <div class="ex-name">${ex.name}</div>
+      <div class="ex-name ${isDone ? 'completed-text' : ''}">
+        ${ex.name} ${isDone ? '🟢' : ''}
+      </div>
       <div class="ex-target">${ex.target}</div>
-      ${lastHtml}
     `;
-    row.appendChild(info);
+    header.appendChild(info);
 
     const sets = document.createElement('div');
     sets.className = 'ex-sets';
@@ -359,7 +334,8 @@ function renderExercises() {
       if (entry.done && entry.reps != null) inner += `<span class="set-reps">${entry.reps}</span>`;
       dot.innerHTML = inner;
       
-      dot.onclick = () => {
+      dot.onclick = (e) => {
+        e.stopPropagation(); // Prevent expanding the row when tapping a set
         haptic();
         if (entry.done) {
           setEntry(currentDay, ex.id, i, { done: false, reps: entry.reps });
@@ -371,7 +347,20 @@ function renderExercises() {
       };
       sets.appendChild(dot);
     }
-    row.appendChild(sets);
+    header.appendChild(sets);
+    row.appendChild(header);
+
+    // Expandable Tips
+    const tips = document.createElement('div');
+    tips.className = 'ex-tips';
+    tips.innerHTML = `<strong>Tip:</strong> ${ex.tip || 'Focus on good form and controlled breathing.'}`;
+    row.appendChild(tips);
+
+    header.onclick = () => {
+      haptic();
+      tips.classList.toggle('open');
+    };
+
     els.exerciseList.appendChild(row);
   });
 }
